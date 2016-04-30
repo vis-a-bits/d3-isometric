@@ -10,3 +10,6 @@ Any svg object capable of transform attribute can be visualized in a isometric p
 
 ### Axis
 isometric grid uses a 3 axis system with x, y and z coordinates
+
+### Scales
+isometric grid uses the regular d3.js scales for its x, y, z coordinates
