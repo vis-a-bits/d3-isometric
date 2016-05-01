@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sample perspective grid</title>
+    <style>
+      #container {
+        background-color: white;
+        width: 400px;
+        height: 800px;
+      }
+
+      .rectangle {
+        fill: #EBEBEB;
+        stroke: black;
+        stroke-width: 1px;
+      }
+
+      .transformed {
+        stroke-width: 2px;
+        stroke: red;
+      }
+
+      .autotransformed {
+        stroke-width: 2px;
+        stroke: green;
+      }
+
+    </style>
+  </head>
+  <body>
+    <svg id="container" width="100%" height="100%"></svg>
+    <script type="text/javascript" charset="utf-8" src="../node_modules/d3/d3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../src/index.js"></script>
+
+    <script type="text/javascript">
+
+/*
+        d3.select('#container').
+          append('rect').
+          attr('class', 'rectangle').
+          attr('x', 100).
+          attr('y', 100).
+          attr('width', 30).
+          attr('height', 30)
+          ;
+*/
+        //floor
+        d3.select('#container').
+          append('rect').
+          attr('class', 'rectangle 1').
+          attr('x', 100).
+          attr('y', 100).
+          attr('width', 30).
+          attr('height', 30).
+          attr('transform', transform().translate(100, 100).rotate(30).translate(-100, -100).toMatrix())
+          ;
+
+        //
+        d3.select('#container').
+          append('rect').
+          attr('class', 'rectangle 1').
+          attr('x', 100).
+          attr('y', 100).
+          attr('width', 30).
+          attr('height', 30).
+          attr('transform', transform().translate(100, 100).rotate(30).skewX(-30).translate(-100, -100).toMatrix())
+          ;
+
+        d3.select('#container').
+          append('rect').
+          attr('class', 'rectangle 1').
+          attr('x', 100).
+          attr('y', 100).
+          attr('width', 30).
+          attr('height', 30).
+          attr('transform', transform().translate(100, 100).rotate(30).skewX(30).translate(-100, -100).toMatrix())
+          ;
+
+        d3.select('#container').
+          append('rect').
+          attr('class', 'rectangle 1').
+          attr('x', 100).
+          attr('y', 100).
+          attr('width', 30).
+          attr('height', 30).
+          attr('transform', transform().translate(100, 100).rotate(30).skewX(30).translate(-100, -100).toMatrix())
+          ;
+
+/*
+        d3.select('#container').
+          append('rect').
+          attr('class', 'rectangle 3').
+          attr('x', 100).
+          attr('y', 100).
+          attr('width', 30).
+          attr('height', 30).
+          attr('transform', 'rotate(30, 100, 100)')
+          ;
+
+        d3.select('#container').
+          append('rect').
+          classed('rectangle', true).
+          attr('x', 100).
+          attr('y', 100).
+          attr('width', 30).
+          attr('height', 30)
+          ;
+*/
+
+    </script>
+  </body>
+</html>
