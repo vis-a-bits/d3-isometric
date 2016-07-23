@@ -4,7 +4,8 @@
   "description": "A isometric layout manager for d3.js",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:babel-core/register --reporter spec test/*.js",
+    "clean": "node ./node_modules/rimraf/bin.js lib",
     "build": "npm run build:commonjs",
     "build:commonjs": "babel --presets es2015 ./src --out-dir ./lib"
   },
