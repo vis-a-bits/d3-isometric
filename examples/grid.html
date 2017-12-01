@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sample perspective grid</title>
+    <style>
+      body {
+        overflow: hidden;
+        margin: 0px;
+      }
+
+      #container {
+        background-color: white;
+      }
+
+      .rectangle {
+        fill: #EBEBEB;
+        stroke: black;
+        stroke-width: 1px;
+      }
+
+      .text {
+        color: #EBEBEB;
+        dominant-baseline: hanging;
+      }
+
+      .transformed {
+        stroke-width: 2px;
+        stroke: red;
+      }
+
+      .grid-row, .grid-column {
+        stroke-width: 0.5px;
+        stroke: rgb(155,155,155);
+        stroke-opacity: 0.4;
+        shape-rendering: crispEdges;
+      }
+
+      .autotransformed {
+        stroke-width: 2px;
+        stroke: green;
+      }
+
+      .hidden {
+        opacity: 0;
+      }
+
+    </style>
+  </head>
+  <body>
+    <svg id="container" width="100%" height="100%"></svg>
+    <script type="text/javascript" charset="utf-8" src="/lib/index.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/node_modules/d3/build/d3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./grid.js"></script>
+
+    <script type="text/javascript">
+      var width = window.screen.width,
+        height = window.screen.height,
+        position = { x: 100, y: 150 }
+        container = d3.select('#container');
+
+      container.attr('width', width)
+        .attr('height', height);
+
+      /*
+        Right wall section
+      */
+      container.append('rect')
+        .attr('class', 'rectangle')
+        .attr('width', 140)
+        .attr('height', 20)
+        .attr('transform', d3.isometric.projection.LeftWall().x(position.x).y(position.y));
+
+      container.append('text')
+        .attr('class', 'text')
+        .attr('transform', d3.isometric.projection.LeftWall().x(position.x).y(position.y))
+        .text('[Left Wall] R-30,S-30 ->');
+
+      //right wall
+      container.append('text').
+        attr('class', 'text hidden').
+        attr('transform', d3.isometric.projection.LeftWall().x(position.x).y(position.y)).
+        text('[Wall/Left] R30,S30 ->');
+       
+      
+      /*
+        Floor section
+      */
+      container.append('rect')
+        .attr('class', 'rectangle')
+        .attr('width', 140)
+        .attr('height', 20)
+        .attr('transform', d3.isometric.projection.Floor().x(position.x).y(position.y));
+
+      container.append('text')
+        .attr('class', 'text')
+        .attr('transform', d3.isometric.projection.Floor().x(position.x).y(position.y))
+        .text('[Floor] R-30,S30 ->');
+
+       /*
+        Grid
+      */
+      container.append('g')
+        .attr('transform', 'translate(x,y)'.replace('x', -width).replace('y', -height))
+        .call(grid().z(height).width(width*2).height(height*2));
+
+    </script>
+  </body>
+</html>

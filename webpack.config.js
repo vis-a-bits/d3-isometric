@@ -4,14 +4,10 @@ const path = require('path'),
 module.exports = {
   entry: './src/index.js',
   output: {
-    library: "d3Isometric",
+    //library: "d3Isometric",
+    library: ["d3", "isometric"],
     libraryTarget: "umd",
     filename: "index.js",
     path: path.resolve(__dirname, 'lib')
-  },
-  plugins: [
-    new webpack.ProvidePlugin({
-      _: 'd3Isometric'
-    })
-  ]
+  }
 };
