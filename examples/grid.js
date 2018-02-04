@@ -17,22 +17,22 @@ var grid = function() {
         .enter()
         .append('line')
         .attr('class', 'grid-row')
-        .attr('x1', function(d, i){ return (i/dataRows.length)*height; })
-        .attr('x2', function(d, i){ return (i/dataRows.length)*height; })
+        .attr('x1', function(d, i){ return (i/dataRows.length)*width; })
+        .attr('x2', function(d, i){ return (i/dataRows.length)*width; })
         .attr('y1', 0)
-        .attr('y2', width)
-        .attr('transform', d3.isometric.projection.Floor().z(z)());
+        .attr('y2', height)
+        .attr('transform', d3.isometric.projection.X().z(z)());
 
       var selectionColumns = d3.select(this).selectAll('.columns')
         .data(dataColumns)
         .enter()
         .append('line')
         .attr('class', 'grid-column')
-        .attr('y1', function(d, i){ return (i/dataRows.length)*width; })
-        .attr('y2', function(d, i){ return (i/dataRows.length)*width; })
+        .attr('y1', function(d, i){ return (i/dataRows.length)*height; })
+        .attr('y2', function(d, i){ return (i/dataRows.length)*height; })
         .attr('x1', 0)
-        .attr('x2', height)
-        .attr('transform', d3.isometric.projection.Floor().z(z)());
+        .attr('x2', width)
+        .attr('transform', d3.isometric.projection.X().z(z)());
     });
   };
 

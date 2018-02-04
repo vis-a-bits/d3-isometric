@@ -36,6 +36,35 @@
         shape-rendering: crispEdges;
       }
 
+      .axis-line, .label-line {
+        stroke-width: 2px;
+        stroke: rgb(155,155,155);
+      }
+
+      .axis-text, .label-text {
+        fill: rgb(155,155,155);
+        font-size: 14px;
+        font-family: AvenirNext-Medium;
+      }
+
+      .skew-shape {
+        stroke-width: 0px;
+        fill: rgb(155,155,155);
+      }
+
+      .rotation-circle {
+        stroke-width: 2px;
+        stroke-dasharray: 5;
+        stroke: rgb(155,155,155);
+        fill: none;
+      }
+
+      .rotation-circle-arrow {
+        stroke-width: 2px;
+        stroke: rgb(155,155,155);
+        fill: none;
+      }
+
       .autotransformed {
         stroke-width: 2px;
         stroke: green;
@@ -48,20 +77,33 @@
     </style>
   </head>
   <body>
-    <svg id="container" width="100%" height="100%"></svg>
+    <svg id="container">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="rgb(155,155,155)" />
+        </marker>
+      </defs>
+    </svg>
     <script type="text/javascript" charset="utf-8" src="/lib/index.js"></script>
     <script type="text/javascript" charset="utf-8" src="/node_modules/d3/build/d3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./layout.js"></script>
     <script type="text/javascript" charset="utf-8" src="./grid.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./axis.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./skewness.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./rotation.js"></script>    
+    <script type="text/javascript" charset="utf-8" src="./label.js"></script>    
 
     <script type="text/javascript">
-      var width = window.screen.width,
-        height = window.screen.height,
-        position = { x: 100, y: 150 }
-        container = d3.select('#container');
+
+      var position = { x: 100, y: 150 },
+        container = d3.select('#container'),
+        width = window.innerWidth,
+        height = window.innerHeight;
 
       container.attr('width', width)
         .attr('height', height);
-
+        
+      //TODO: move this to its own component
       /*
         Right wall section
       */
@@ -69,19 +111,18 @@
         .attr('class', 'rectangle')
         .attr('width', 140)
         .attr('height', 20)
-        .attr('transform', d3.isometric.projection.LeftWall().x(position.x).y(position.y));
+        .attr('transform', d3.isometric.projection.Y().x(position.x).y(position.y));
 
       container.append('text')
         .attr('class', 'text')
-        .attr('transform', d3.isometric.projection.LeftWall().x(position.x).y(position.y))
+        .attr('transform', d3.isometric.projection.Y().x(position.x).y(position.y))
         .text('[Left Wall] R-30,S-30 ->');
 
       //right wall
       container.append('text').
         attr('class', 'text hidden').
-        attr('transform', d3.isometric.projection.LeftWall().x(position.x).y(position.y)).
+        attr('transform', d3.isometric.projection.Y().x(position.x).y(position.y)).
         text('[Wall/Left] R30,S30 ->');
-       
       
       /*
         Floor section
@@ -90,19 +131,60 @@
         .attr('class', 'rectangle')
         .attr('width', 140)
         .attr('height', 20)
-        .attr('transform', d3.isometric.projection.Floor().x(position.x).y(position.y));
+        .attr('transform', d3.isometric.projection.X().x(position.x).y(position.y));
 
       container.append('text')
         .attr('class', 'text')
-        .attr('transform', d3.isometric.projection.Floor().x(position.x).y(position.y))
+        .attr('transform', d3.isometric.projection.X().x(position.x).y(position.y))
         .text('[Floor] R-30,S30 ->');
 
-       /*
+      /*
         Grid
       */
       container.append('g')
-        .attr('transform', 'translate(x,y)'.replace('x', -width).replace('y', -height))
-        .call(grid().z(height).width(width*2).height(height*2));
+        .attr('transform', 'translate(x,y)'.replace('x', -width).replace('y', 0))
+        .call(grid().z(height).width(width*4).height(height*4));
+
+      /*
+        Axis title
+      */
+      container.selectAll('.label-axis') 
+        .data(['AXIS'])
+        .enter()
+        .append('g')
+        .attr('class', 'legend label-axis')
+        .call(label());
+
+      /*
+        Axis legend
+      */
+      container.append('g')
+        .attr('class', 'legend')
+        .call(axis());
+
+      /*
+        Skewness legend
+      */
+      container.append('g')
+        .attr('class', 'legend skewness')
+        .call(skewness());
+
+      /*
+        Rotation legend
+      */
+      container.append('g')
+        .attr('class', 'legend')
+        .call(rotation());
+      
+      /*
+        Layout the legends vertically
+      */
+      container.selectAll('.legend').call(
+          layout.vertical()
+            .spacing(24)
+            .offsetX(24)
+            .offsetY(24)
+        );
 
     </script>
   </body>
